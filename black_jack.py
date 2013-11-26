@@ -78,18 +78,30 @@ class Hand:
 class Deck:
     def __init__(self):
         pass	# create a Deck object
+        self.card_deck = []
+        for suits in SUITS:
+            for ranks in RANKS:
+                card = Card(suits,ranks)
+                self.card_deck.append(card)
+        
 
     def shuffle(self):
         # shuffle the deck 
+        random.shuffle(self.card_deck)
         pass    # use random.shuffle()
 
     def deal_card(self):
         pass	# deal a card object from the deck
-    
+        card = self.card_deck[-1]
+        self.card_deck.pop()
+        return card
+        
     def __str__(self):
         pass	# return a string representing the deck
-
-
+        ans = ''
+        for i in range(len(self.card_deck)):
+            ans += str(self.card_deck[i]) + " "
+        return "Deck contains " + ans
 
 #define event handlers for buttons
 def deal():
