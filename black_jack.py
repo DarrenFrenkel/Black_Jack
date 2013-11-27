@@ -16,6 +16,10 @@ card_back = simplegui.load_image("http://commondatastorage.googleapis.com/codesk
 in_play = False
 outcome = ""
 score = 0
+deck = []
+players_hand = []
+dealers_hand = []
+
 
 # define globals for cards
 SUITS = ('C', 'S', 'H', 'D')
@@ -32,7 +36,7 @@ class Card:
         else:
             self.suit = None
             self.rank = None
-            print ("Invalid card: ", suit, rank)
+            print "Invalid card: ", suit, rank
 
     def __str__(self):
         return self.suit + self.rank
@@ -57,7 +61,6 @@ class Hand:
         ans = ''
         for i in range(len(self.cards)):
             ans += str(self.cards[i]) + " "
-        return ans    
         return "Hand contains " + ans
  
         pass	# return a string representation of a hand
@@ -103,9 +106,24 @@ class Deck:
             ans += str(self.card_deck[i]) + " "
         return "Deck contains " + ans
 
+            
+        
+
+
 #define event handlers for buttons
 def deal():
-    global outcome, in_play
+    global outcome, in_play, deck, players_hand, dealers_hand
+    
+    deck = Deck()
+    deck.shuffle()
+   
+    
+    players_hand = Hand()
+    dealers_hand = Hand()
+    players_hand.add_card(deck.deal_card())
+    dealers_hand.add_card(deck.deal_card())
+    players_hand.add_card(deck.deal_card())
+    dealers_hand.add_card(deck.deal_card())
 
     # your code goes here
     
@@ -147,6 +165,5 @@ frame.set_draw_handler(draw)
 # get things rolling
 deal()
 frame.start()
-
 
 # remember to review the gradic rubric
