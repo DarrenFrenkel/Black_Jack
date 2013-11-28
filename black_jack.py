@@ -77,24 +77,33 @@ class Hand:
     def get_value(self):
         ranks = ""
         total_value = 0
-        none_value = 0
+       # none_value = 0
+        aces = True
+        
+ 
         
         for i in self.cards:
             ranks += i.get_rank()
             
-        print ranks
-        for i in ranks:
-           total_value += VALUES[i]
         
         for i in ranks:
-           if i != 'A':
-                return total_value
-           elif i == 'A':
+           total_value += VALUES[i]
+            
+
+        for i in ranks:
+            if i == 'A':
+                aces = False
+        
+        if aces == True:    	
+              return total_value
+        elif aces == False:
                 if total_value + 10 > 21:
                     return total_value
                 else:
-                    return total_value + 10
-                
+                    new_value = total_value + 10
+                    return new_value
+        
+                            
                
    
       
@@ -152,7 +161,7 @@ def deal():
             score -= 1
             
     keeping_track = False
-    print keeping_track
+
         
  
 
@@ -162,7 +171,7 @@ def hit():
         players_hand.add_card(deck.deal_card())
         
         if players_hand.get_value() > 21:
-            outcome = "You Have Busted, New Deal?"
+            outcome = "You Have Busted. New Deal?"
             in_play = False
             score -= 1
             keeping_track = True
@@ -170,25 +179,25 @@ def hit():
 def stand():
     global outcome, in_play, score, keeping_track
     if players_hand.get_value() > 21 and keeping_track == False:
-        outcome = "You Have Busted, New Deal?"
+        outcome = "You Have Busted. New Deal?"
         in_play = False
     elif players_hand.get_value() <= 21 and keeping_track == False:
         while dealers_hand.get_value() < 17:
             dealers_hand.add_card(deck.deal_card())
   
         if dealers_hand.get_value() > 21:
-            outcome = "You Win!!!, New Deal?"
+            outcome = "You Win!!! New Deal?"
             in_play = False
             score += 1
             keeping_track = True
         else: 
             if dealers_hand.get_value() >= players_hand.get_value():
-                outcome = "Win goes to the dealer, New Deal?"
+                outcome = "Win goes to the dealer. New Deal?"
                 in_play = False
                 score -= 1
                 keeping_track = True
             else:
-                outcome = "You Win!!!, New Deal?"
+                outcome = "You Win!!! New Deal?"
                 in_play = False
                 score += 1
                 keeping_track = True
