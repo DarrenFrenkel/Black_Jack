@@ -20,6 +20,7 @@ deck = []
 players_hand = []
 dealers_hand = []
 pozish = [0,0]
+pozishd = [0,0]
 outcome = ""
 
 
@@ -135,7 +136,7 @@ class Deck:
 #define event handlers for buttons
 def deal():
     global outcome, in_play, deck, players_hand, dealers_hand, pozish
-    outcome = "hit or stand"
+    outcome = "hit or stand?"
     deck = Deck()
     deck.shuffle()
    
@@ -173,7 +174,7 @@ def stand():
     elif players_hand.get_value() < 21:
         while dealers_hand.get_value() < 17:
             dealers_hand.add_card(deck.deal_card())
-
+  
         if dealers_hand.get_value() > 21:
             outcome = "You Win!!!, New Deal?"
         else: 
@@ -182,19 +183,27 @@ def stand():
             else:
                 outcome = "You Win!!!, New Deal?"               
     else:
-        outcome = "hit or stand"
+        outcome = "hit or stand?"
 
 # draw handler    
 def draw(canvas):
     # test to make sure that card.draw works, replace with your code below
     pozish[0] = 20
-    pozish[1] = 70
+    pozish[1] = 90
     for x in players_hand.cards:
         x.draw(canvas, pozish)
         pozish[0] += 83
         
-    canvas.draw_text(outcome, (25,220), 40, "White")
-    canvas.draw_text("Black Jack", (220,35), 40, "Black") 
+    pozishd[0] = 20
+    pozishd[1] = 350
+    for x in dealers_hand.cards:
+        x.draw(canvas, pozishd)
+        pozishd[0] += 83
+        
+    canvas.draw_text(outcome, (25,280), 40, "White")
+    canvas.draw_text("Black Jack", (220,35), 40, "Black")
+    canvas.draw_text("Player", (30,80), 20, "Red")
+    canvas.draw_text("Dealer", (30,340), 20, "Red")
 
 
 # initialization frame
@@ -211,3 +220,6 @@ frame.set_draw_handler(draw)
 # get things rolling
 deal()
 frame.start()
+
+
+# remember to review the gradic rubric
