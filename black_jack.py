@@ -20,6 +20,7 @@ deck = []
 players_hand = []
 dealers_hand = []
 pozish = [0,0]
+outcome = ""
 
 
 # define globals for cards
@@ -134,7 +135,7 @@ class Deck:
 #define event handlers for buttons
 def deal():
     global outcome, in_play, deck, players_hand, dealers_hand, pozish
-    
+    outcome = "hit or stand"
     deck = Deck()
     deck.shuffle()
    
@@ -146,23 +147,17 @@ def deal():
     players_hand.add_card(deck.deal_card())
     dealers_hand.add_card(deck.deal_card())
     
-    
-    
-    print (players_hand)
-
-    # your code goes here
-    
     in_play = True
 
 def hit():
-    global players_hand
+    global players_hand, outcome
     if players_hand.get_value() <= 21:
         players_hand.add_card(deck.deal_card())
         
-    if players_hand.get_value() > 21:
-        print ("You Have Busted")
+        if players_hand.get_value() > 21:
+            outcome = "You Have Busted, New Deal"
         
-    print (players_hand)    
+   
         
         
     pass	# replace with your code below
@@ -172,31 +167,34 @@ def hit():
     # if busted, assign a message to outcome, update in_play and score
        
 def stand():
+    global outcome
     if players_hand.get_value() > 21:
-        print ("You Have Busted")
-    else:
+        outcome = "You Have Busted"
+    elif players_hand.get_value() < 21:
         while dealers_hand.get_value() < 17:
             dealers_hand.add_card(deck.deal_card())
-            
+
         if dealers_hand.get_value() > 21:
-            print ("You Win!!!")
+            outcome = "You Win!!!, New Deal?"
         else: 
             if dealers_hand.get_value() >= players_hand.get_value():
-                print ("Win goes to the dealer")
+                outcome = "Win goes to the dealer, New Deal?"
             else:
-                print ("You Win!!!")
-        print (dealers_hand)                
+                outcome = "You Win!!!, New Deal?"               
+    else:
+        outcome = "hit or stand"
 
 # draw handler    
 def draw(canvas):
     # test to make sure that card.draw works, replace with your code below
-    
-
     pozish[0] = 20
-    pozish[1] = 20
+    pozish[1] = 70
     for x in players_hand.cards:
         x.draw(canvas, pozish)
         pozish[0] += 83
+        
+    canvas.draw_text(outcome, (25,220), 40, "White")
+    canvas.draw_text("Black Jack", (220,35), 40, "Black") 
 
 
 # initialization frame
@@ -213,5 +211,3 @@ frame.set_draw_handler(draw)
 # get things rolling
 deal()
 frame.start()
-
-# remember to review the gradic rubric
