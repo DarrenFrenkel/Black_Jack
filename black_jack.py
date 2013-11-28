@@ -19,6 +19,7 @@ score = 0
 deck = []
 players_hand = []
 dealers_hand = []
+pozish = [0,0]
 
 
 # define globals for cards
@@ -91,6 +92,9 @@ class Hand:
         return total_value  
    
     def draw(self, canvas, pos):
+        self.canvas = canvas
+        self.pos = pos
+        x.draw(canvas,pos)
         pass	# draw a hand on the canvas, use the draw method for cards
  
         
@@ -129,7 +133,7 @@ class Deck:
 
 #define event handlers for buttons
 def deal():
-    global outcome, in_play, deck, players_hand, dealers_hand
+    global outcome, in_play, deck, players_hand, dealers_hand, pozish
     
     deck = Deck()
     deck.shuffle()
@@ -141,6 +145,9 @@ def deal():
     dealers_hand.add_card(deck.deal_card())
     players_hand.add_card(deck.deal_card())
     dealers_hand.add_card(deck.deal_card())
+    
+    
+    
     print (players_hand)
 
     # your code goes here
@@ -152,7 +159,7 @@ def hit():
     if players_hand.get_value() <= 21:
         players_hand.add_card(deck.deal_card())
         
-    if players_hand.get_value() >= 21:
+    if players_hand.get_value() > 21:
         print ("You Have Busted")
         
     print (players_hand)    
@@ -184,8 +191,12 @@ def stand():
 def draw(canvas):
     # test to make sure that card.draw works, replace with your code below
     
-    card = Card("S", "A")
-    card.draw(canvas, [300, 300])
+
+    pozish[0] = 20
+    pozish[1] = 20
+    for x in players_hand.cards:
+        x.draw(canvas, pozish)
+        pozish[0] += 83
 
 
 # initialization frame
