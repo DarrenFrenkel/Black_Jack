@@ -13,7 +13,7 @@ CARD_BACK_CENTER = (35.5, 48)
 card_back = simplegui.load_image("http://commondatastorage.googleapis.com/codeskulptor-assets/card_back.png")    
 
 # initialize some useful global variables
-in_play = False
+in_play = True
 outcome = ""
 score = 0
 deck = []
@@ -22,6 +22,8 @@ dealers_hand = []
 pozish = [0,0]
 pozishd = [0,0]
 outcome = ""
+score = 0
+keeping_track = True
 
 
 # define globals for cards
@@ -79,24 +81,22 @@ class Hand:
         
         for i in self.cards:
             ranks += i.get_rank()
-        
+            
+        print ranks
         for i in ranks:
            total_value += VALUES[i]
-       
+        
         for i in ranks:
            if i != 'A':
                 return total_value
            elif i == 'A':
-                if total_value + 10 >=21:
+                if total_value + 10 > 21:
                     return total_value
                 else:
                     return total_value + 10
-        return total_value  
+                
+               
    
-
-        self.canvas = canvas
-        self.pos = pos
-        x.draw(canvas,pos)
       
         
 # define deck class 
@@ -134,12 +134,11 @@ class Deck:
 
 #define event handlers for buttons
 def deal():
-    global outcome, in_play, deck, players_hand, dealers_hand, pozish
+    global outcome, in_play, deck, players_hand, dealers_hand, pozish, score,flag, keeping_track
     outcome = "hit or stand?"
     deck = Deck()
     deck.shuffle()
-   
-    
+  
     players_hand = Hand()
     dealers_hand = Hand()
     players_hand.add_card(deck.deal_card())
@@ -147,47 +146,54 @@ def deal():
     players_hand.add_card(deck.deal_card())
     dealers_hand.add_card(deck.deal_card())
     
+
     in_play = True
+    if keeping_track == False:
+            score -= 1
+            
+    keeping_track = False
+    print keeping_track
+        
+ 
 
 def hit():
-    global players_hand, outcome, in_play
-    if players_hand.get_value() <= 21:
+    global players_hand, outcome, in_play, score, keeping_track
+    if players_hand.get_value() <= 21 and keeping_track == False:
         players_hand.add_card(deck.deal_card())
         
         if players_hand.get_value() > 21:
-            outcome = "You Have Busted, New Deal"
+            outcome = "You Have Busted, New Deal?"
             in_play = False
-        
+            score -= 1
+            keeping_track = True
    
-        
-        
-    pass	# replace with your code below
- 
-    # if the hand is in play, hit the player
-   
-    # if busted, assign a message to outcome, update in_play and score
-       
 def stand():
-    global outcome, in_play
-    if players_hand.get_value() > 21:
+    global outcome, in_play, score, keeping_track
+    if players_hand.get_value() > 21 and keeping_track == False:
         outcome = "You Have Busted, New Deal?"
         in_play = False
-    elif players_hand.get_value() <= 21:
+    elif players_hand.get_value() <= 21 and keeping_track == False:
         while dealers_hand.get_value() < 17:
             dealers_hand.add_card(deck.deal_card())
   
         if dealers_hand.get_value() > 21:
             outcome = "You Win!!!, New Deal?"
             in_play = False
+            score += 1
+            keeping_track = True
         else: 
             if dealers_hand.get_value() >= players_hand.get_value():
                 outcome = "Win goes to the dealer, New Deal?"
                 in_play = False
+                score -= 1
+                keeping_track = True
             else:
                 outcome = "You Win!!!, New Deal?"
                 in_play = False
-    else:
-        outcome = "hit or stand?"
+                score += 1
+                keeping_track = True
+   # else:
+    #    outcome = "hit or stand?"
 
 # draw handler    
 def draw(canvas):
@@ -208,7 +214,8 @@ def draw(canvas):
         canvas.draw_image(card_back, CARD_BACK_CENTER, CARD_BACK_SIZE, (58,400), CARD_SIZE)
         
     canvas.draw_text(outcome, (25,280), 40, "White")
-    canvas.draw_text("Black Jack", (220,35), 40, "Black")
+    canvas.draw_text("Black Jack", (20,35), 40, "Black")
+    canvas.draw_text("Your Score: " +str(score), (350,35), 40, "Black")
     canvas.draw_text("Player", (30,80), 20, "Red")
     canvas.draw_text("Dealer", (30,340), 20, "Red")
 
