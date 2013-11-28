@@ -93,12 +93,11 @@ class Hand:
                     return total_value + 10
         return total_value  
    
-    def draw(self, canvas, pos):
+
         self.canvas = canvas
         self.pos = pos
         x.draw(canvas,pos)
-        pass	# draw a hand on the canvas, use the draw method for cards
- 
+      
         
 # define deck class 
 class Deck:
@@ -151,12 +150,13 @@ def deal():
     in_play = True
 
 def hit():
-    global players_hand, outcome
+    global players_hand, outcome, in_play
     if players_hand.get_value() <= 21:
         players_hand.add_card(deck.deal_card())
         
         if players_hand.get_value() > 21:
             outcome = "You Have Busted, New Deal"
+            in_play = False
         
    
         
@@ -168,20 +168,24 @@ def hit():
     # if busted, assign a message to outcome, update in_play and score
        
 def stand():
-    global outcome
+    global outcome, in_play
     if players_hand.get_value() > 21:
-        outcome = "You Have Busted"
-    elif players_hand.get_value() < 21:
+        outcome = "You Have Busted, New Deal?"
+        in_play = False
+    elif players_hand.get_value() <= 21:
         while dealers_hand.get_value() < 17:
             dealers_hand.add_card(deck.deal_card())
   
         if dealers_hand.get_value() > 21:
             outcome = "You Win!!!, New Deal?"
+            in_play = False
         else: 
             if dealers_hand.get_value() >= players_hand.get_value():
                 outcome = "Win goes to the dealer, New Deal?"
+                in_play = False
             else:
-                outcome = "You Win!!!, New Deal?"               
+                outcome = "You Win!!!, New Deal?"
+                in_play = False
     else:
         outcome = "hit or stand?"
 
@@ -199,6 +203,9 @@ def draw(canvas):
     for x in dealers_hand.cards:
         x.draw(canvas, pozishd)
         pozishd[0] += 83
+        
+    if in_play == True:
+        canvas.draw_image(card_back, CARD_BACK_CENTER, CARD_BACK_SIZE, (58,400), CARD_SIZE)
         
     canvas.draw_text(outcome, (25,280), 40, "White")
     canvas.draw_text("Black Jack", (220,35), 40, "Black")
