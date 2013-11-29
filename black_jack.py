@@ -67,8 +67,6 @@ class Hand:
         for i in range(len(self.cards)):
             ans += str(self.cards[i]) + " "
         return "Hand contains " + ans
- 
-        pass	# return a string representation of a hand
 
     def add_card(self, card):
         self.cards.append(card)
@@ -80,16 +78,12 @@ class Hand:
        # none_value = 0
         aces = True
         
- 
-        
         for i in self.cards:
             ranks += i.get_rank()
             
-        
         for i in ranks:
            total_value += VALUES[i]
             
-
         for i in ranks:
             if i == 'A':
                 aces = False
@@ -102,16 +96,11 @@ class Hand:
                 else:
                     new_value = total_value + 10
                     return new_value
-        
-                            
-               
-   
-      
-        
+					
 # define deck class 
 class Deck:
     def __init__(self):
-        pass	# create a Deck object
+    # create a Deck object
         self.card_deck = []
         for suits in SUITS:
             for ranks in RANKS:
@@ -120,18 +109,18 @@ class Deck:
         
 
     def shuffle(self):
-        # shuffle the deck 
+    # shuffle the deck 
         random.shuffle(self.card_deck)
-        pass    # use random.shuffle()
+
 
     def deal_card(self):
-        pass	# deal a card object from the deck
+	# deal a card object from the deck
         card = self.card_deck[-1]
         self.card_deck.pop()
         return card
         
     def __str__(self):
-        pass	# return a string representing the deck
+    # return a string representing the deck
         ans = ''
         for i in range(len(self.card_deck)):
             ans += str(self.card_deck[i]) + " "
@@ -201,12 +190,9 @@ def stand():
                 in_play = False
                 score += 1
                 keeping_track = True
-   # else:
-    #    outcome = "hit or stand?"
 
 # draw handler    
 def draw(canvas):
-    # test to make sure that card.draw works, replace with your code below
     pozish[0] = 20
     pozish[1] = 90
     for x in players_hand.cards:
@@ -244,5 +230,3 @@ frame.set_draw_handler(draw)
 deal()
 frame.start()
 
-
-# remember to review the gradic rubric
