@@ -208,21 +208,21 @@ def draw(canvas):
     if in_play == True:
         canvas.draw_image(card_back, CARD_BACK_CENTER, CARD_BACK_SIZE, (58,400), CARD_SIZE)
         
-    canvas.draw_text(outcome, (25,280), 40, "White")
-    canvas.draw_text("Black Jack", (20,35), 40, "Black")
-    canvas.draw_text("Your Score: " +str(score), (350,35), 40, "Black")
-    canvas.draw_text("Player", (30,80), 20, "Red")
-    canvas.draw_text("Dealer", (30,340), 20, "Red")
+    canvas.draw_text(outcome, (25,280), 30, "White")
+    canvas.draw_text("Black Jack", (20,43), 30, "Black")
+    canvas.draw_text("Your Score: " +str(score), (350,43), 30, "Black")
+    canvas.draw_text("Player", (30,80), 15, "Red")
+    canvas.draw_text("Dealer", (30,340), 15, "Red")
 
 
 # initialization frame
-frame = simplegui.create_frame("Blackjack", 600, 600)
+frame = simplegui.create_frame("Blackjack", 630, 500)
 frame.set_canvas_background("Green")
 
 #create buttons and canvas callback
-frame.add_button("Deal", deal, 200)
-frame.add_button("Hit",  hit, 200)
-frame.add_button("Stand", stand, 200)
+frame.add_button("Deal", deal, 100)
+frame.add_button("Hit",  hit, 100)
+frame.add_button("Stand", stand, 100)
 frame.set_draw_handler(draw)
 
 
