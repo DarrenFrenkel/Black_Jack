@@ -1,7 +1,7 @@
 Black_Jack
 ==========
 Hey this is the game of black jack based on the essential rules. To play this you must download python 
-and the following following imports:
+and the following following modules:
 
 * simpleguitk
 * pygame
